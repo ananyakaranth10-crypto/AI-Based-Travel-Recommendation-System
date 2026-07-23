@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Through India</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Journey Through India
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/trip-planner">🗺 Trip Planner</a></li>
+            <li><a href="/my-trips">🧳 My Trips</a></li>
+            <li><a href="/favorites">❤️ My Favorites</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        </ul>
+
+    </nav>
+
+    <!-- Hero Section -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Journey Through India</h1>
+
+            <p>
+                Find destinations that match your travel style,
+                budget and season.
+            </p>
+
+            <a href="/journey-planner" class="btn">
+                Find My Journey
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- Categories -->
+
+    <section class="categories">
+
+        <h2>Explore By Category</h2>
+
+        <div class="category-container">
+            <a href="{{ url_for('category_places',
+                    category='Beach') }}"
+                 class="place-link">
+
+            <div class="category-card">
+                <img src="{{ url_for('static', filename='images/beach.jpg') }}">
+                <h3>Beaches</h3>
+            </div>
+
+            <a href="{{ url_for('category_places',
+                    category='Hill Station') }}"
+                        class="place-link">
+            <div class="category-card">
+                <img src="{{ url_for('static', filename='images/hill station.jpg') }}">
+                <h3>Hill Stations</h3>
+            </div>
+            <a href="{{ url_for('category_places',
+                    category='Historical') }}"
+                       class="place-link">
+
+            <div class="category-card">
+                <img src="{{ url_for('static', filename='images/historical.jpg') }}">
+                <h3>Historical</h3>
+            </div>
+            <a href="{{ url_for('category_places',
+                    category='Wildlife') }}"
+                     class="place-link">
+            <div class="category-card">
+                <img src="{{ url_for('static', filename='images/wild.jpg') }}">
+                <h3>Wildlife</h3>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Featured Destinations -->
+
+    <section class="featured">
+
+        <h2>Featured Destinations</h2>
+
+        <div class="destination-container">
+
+            <a href="{{ url_for('place_details', place_name='Coorg') }}"
+              class="place-link">
+            <div class="destination-card">
+                <img src="{{ url_for('static', filename='images/coorg.jpg') }}">
+                <h3>Coorg</h3>
+                <p>Karnataka</p>
+            </div>
+            </a>
+
+            <a href="{{ url_for('place_details', place_name='Hampi') }}"
+             class="place-link">
+            <div class="destination-card">
+                <img src="{{ url_for('static', filename='images/hampi.jpg') }}">
+                <h3>Hampi</h3>
+                <p>Karnataka</p>
+            </div>
+            </a>
+
+            <a href="{{ url_for('place_details', place_name='Butterfly Beach') }}"
+              class="place-link">
+            <div class="destination-card">
+                <img src="{{ url_for('static', filename='images/goa.jpg') }}">
+                <h3>Goa</h3>
+                <p>Goa</p>
+            </div>
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- Messages Section -->
+    <section class="home-messages-section" id="messages">
+
+        <h2>💬 Community Messages</h2>
+        <p>Questions and answers from fellow travelers</p>
+
+        {% if messages %}
+
+            {% for msg in messages %}
+
+            <div class="message-card">
+
+                <div class="message-header">
+                    <h3>{{ msg[1] }}</h3>
+                    <span class="message-date">📅 {{ msg[3][:10] }}</span>
+                </div>
+
+                <div class="message-body">
+                    <p>{{ msg[3] }}</p>
+                </div>
+
+                {% if replies[msg[0]] %}
+
+                <div class="replies-section">
+
+                    <h4>💬 Replies</h4>
+
+                    {% for reply in replies[msg[0]] %}
+
+                    <div class="reply-card">
+                        <span class="reply-user">{{ reply[0] }}</span>
+                        <span class="reply-date">{{ reply[2][:10] }}</span>
+                        <p>{{ reply[1] }}</p>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                {% endif %}
+
+                {% if session.get("user_name") and session.get("user_email") != msg[2] %}
+
+                <div class="reply-form">
+
+                    <form action="/reply-message/{{ msg[0] }}" method="POST">
+
+                        <textarea name="reply"
+                                  rows="2"
+                                  placeholder="Write a reply..."
+                                  required></textarea>
+
+                        <button type="submit">Reply</button>
+
+                    </form>
+
+                </div>
+
+                {% elif not session.get("user_name") %}
+
+                <p style="font-size:13px; color:#888; margin-top:10px;">
+                    <a href="/login?next=/#messages">Login to reply</a>
+                </p>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p style="text-align:center; color:#888;">
+                No messages yet. Be the first to
+                <a href="/contact">send a message!</a>
+            </p>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <h3>Journey Through India</h3>
+
+        <p>Explore • Discover • Travel</p>
+
+    </footer>
+
+</body>
+
+</html>

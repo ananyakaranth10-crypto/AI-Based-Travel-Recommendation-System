@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Trips</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Journey Through India</div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/trip-planner">Trip Planner</a></li>
+        <li><a href="/favorites">Favorites</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+
+<section class="my-trips-section">
+
+    <h1>🧳 My Saved Trips</h1>
+
+    {% if trips %}
+
+        {% for trip in trips %}
+
+        <div class="saved-trip-card">
+
+            <div class="saved-trip-header">
+                <h2>{{ trip.trip_name }}</h2>
+                <span class="trip-badge">{{ trip.num_days }} Days</span>
+            </div>
+
+            <p class="trip-date">📅 Saved on {{ trip.created_at[:10] }}</p>
+
+            <div class="trip-places-list">
+                {% for place in trip.places %}
+                <a href="/place/{{ place }}" class="trip-place-tag">
+                    📍 {{ place }}
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="no-trips">
+            <p>You haven't saved any trips yet.</p>
+            <a href="/trip-planner" class="generate-btn">Plan a Trip</a>
+        </div>
+
+    {% endif %}
+
+</section>
+
+<footer>
+    <h3>Journey Through India</h3>
+    <p>Explore • Discover • Travel</p>
+</footer>
+
+</body>
+</html>

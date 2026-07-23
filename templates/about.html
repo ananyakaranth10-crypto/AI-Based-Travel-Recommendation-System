@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Journey Through India</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Journey Through India
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+    </ul>
+
+</nav>
+
+<section class="about-hero">
+
+    <h1>About Journey Through India</h1>
+
+</section>
+
+<section class="about-content">
+
+    <img src="{{ url_for('static', filename='images/about.jpg') }}"
+         alt="About">
+
+    <div class="about-text">
+
+        <h2>Discover India Differently</h2>
+
+        <p>
+            Journey Through India is a travel recommendation
+            platform that helps travelers discover destinations
+            based on travel preferences, budget, and interests.
+        </p>
+
+        <p>
+            From scenic hill stations and pristine beaches
+            to historical landmarks and spiritual destinations,
+            our platform makes travel planning easier and
+            more enjoyable.
+        </p>
+
+    </div>
+
+</section>
+
+<section class="why-us">
+
+    <h2>Why Choose Us?</h2>
+
+    <div class="why-container">
+
+        <div class="why-card">
+            Personalized Recommendations
+        </div>
+
+        <div class="why-card">
+            Budget Friendly Destinations
+        </div>
+
+        <div class="why-card">
+            Seasonal Travel Suggestions
+        </div>
+
+        <div class="why-card">
+            Diverse Travel Categories
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <h3>Journey Through India</h3>
+
+    <p>Explore • Discover • Travel</p>
+
+</footer>
+
+</body>
+</html>

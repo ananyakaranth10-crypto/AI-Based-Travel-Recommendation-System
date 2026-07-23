@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Planner</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        Journey Through India
+    </div>
+
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/my-trips">🧳 My Trips</a></li>
+        <li><a href="/favorites">❤️ My Favorites</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+
+</nav>
+
+<section class="planner-section">
+
+    <div class="planner-image">
+
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}"
+             alt="Journey Planner">
+
+    </div>
+
+    <div class="planner-form">
+
+        <h2>Journey Planner</h2>
+
+        <p>
+            Tell us about your travel plans and discover
+            destinations tailored for you.
+        </p>
+
+        <form action="/recommend" method="POST">
+
+            <input type="text"
+                   name="name"
+                   placeholder="Your Name">
+
+            <!-- State Dropdown -->
+            <select name="state">
+
+                <option value="">Select State</option>
+
+                {% for state in states %}
+                <option value="{{ state }}">
+                    {{ state }}
+                </option>
+                {% endfor %}
+
+            </select>
+
+            <!-- Trip Type Dropdown -->
+            <select name="trip_type">
+
+                <option value="">Trip Type</option>
+
+                {% for trip in trip_types %}
+                <option value="{{ trip }}">
+                    {{ trip }}
+                </option>
+                {% endfor %}
+
+            </select>
+
+            
+
+            <!-- Budget -->
+            <input type="number"
+                   name="budget"
+                   placeholder="Budget">
+
+        
+
+            <button type="submit">
+                Show Destinations
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<footer>
+
+    <h3>Journey Through India</h3>
+
+    <p>Explore • Discover • Travel</p>
+
+</footer>
+
+</body>
+</html>

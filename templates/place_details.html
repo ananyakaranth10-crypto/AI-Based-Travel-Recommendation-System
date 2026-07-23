@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+
+<title>{{ place.Place_Name }}</title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='css/style.css') }}">
+
+
+</head>
+
+<body>
+
+<div class="place-details-page">
+
+
+<a href="{{ url_for('journey_planner') }}"
+   class="back-btn">
+    ← Back to Recommendations
+</a>
+
+<div class="place-card-large">
+
+    <div class="image-side">
+
+        <img
+            src="{{ url_for('static',
+            filename=place.Image_URL.replace('\\','/')) }}"
+            class="place-banner"
+            alt="{{ place.Place_Name }}">
+
+    </div>
+
+    <div class="place-info">
+
+        <h1>{{ place.Place_Name }}</h1>
+
+        <div class="rating-badge">
+            ⭐ {{ place.Rating }}
+        </div>
+        <a href="{{ url_for('add_favorite', place_name=place.Place_Name) }}"
+   class="favorite-btn">
+    ❤️ Add to Favorites
+     </a>
+
+        <p><b>📍 State:</b> {{ place.State_UT }}</p>
+
+        <p><b>🏷 Category:</b> {{ place.Category }}</p>
+
+        <p><b>🌤 Best Season:</b> {{ place.Best_Season }}</p>
+
+        <p><b>Description</b></p>
+
+        <p>
+            {{ place.Description }}
+        </p>
+        <a href="https://www.google.com/search?q=weather+in+{{ place.Place_Name }}+{{ place.State_UT }}+India" 
+   target="_blank" 
+   class="weather-link">
+   🌤 Click here to see current weather
+</a>
+
+    </div>
+
+</div>
+
+<div class="map-card">
+
+    <h2>📍 Explore on Map</h2>
+
+    <iframe
+        src="https://maps.google.com/maps?q={{ place.Place_Name }} {{ place.State_UT }} India&output=embed"
+        loading="lazy">
+    </iframe>
+
+    <a
+        href="https://www.google.com/maps/search/{{ place.Place_Name }} {{ place.State_UT }}"
+        target="_blank"
+        class="map-btn">
+
+        Open in Google Maps
+
+    </a>
+
+</div>
+
+<div class="reviews-section">
+
+    <h2>⭐ User Reviews</h2>
+
+    {% if reviews %}
+
+        {% for review in reviews %}
+
+        <div class="review-card">
+
+            <div class="review-header">
+
+                <h3>{{ review[0] }}</h3>
+
+                <span>{{ "⭐" * review[1] }}</span>
+
+            </div>
+
+            <p>{{ review[2] }}</p>
+
+            <small>{{ review[3] }}</small>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No reviews yet. Be the first to review this place!</p>
+
+    {% endif %}
+
+</div>
+
+{% if session.get("user_name") %}
+
+<div class="review-form">
+
+    <h2>Write a Review</h2>
+
+    <form
+        action="{{ url_for('add_review', place_name=place.Place_Name) }}"
+        method="POST">
+
+        <label>Rating</label>
+
+        <select name="rating" required>
+
+            <option value="">Select Rating</option>
+
+            <option value="5">⭐⭐⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="1">⭐</option>
+
+        </select>
+
+        <textarea
+            name="review"
+            rows="5"
+            placeholder="Share your travel experience..."
+            required></textarea>
+
+        <button type="submit">
+            Submit Review
+        </button>
+
+    </form>
+
+</div>
+
+{% else %}
+
+<p style="text-align:center; margin-top:20px;">
+
+    <a href="{{ url_for('login', next=url_for('place_details', place_name=place.Place_Name)) }}">
+    Login to write a review
+</a>
+
+</p>
+
+{% endif %}
+
+
+</div>
+
+</body>
+</html>

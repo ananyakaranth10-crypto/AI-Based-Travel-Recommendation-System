@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recommended Destinations</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+</head>
+
+<body>
+
+<h1>Recommended Destinations</h1>
+
+<div class="cards-container">
+
+{% if recommendations %}
+
+    {% for place in recommendations %}
+
+    <a href="{{ url_for('place_details', place_name=place.Place_Name) }}" class="place-link">
+
+        <div class="place-card">
+
+            <img
+                src="{{ url_for('static', filename=place.Image_URL.replace('\\','/')) }}"
+                alt="{{ place.Place_Name }}"
+                class="place-image">
+
+            <div class="card-content">
+
+                <h2>{{ place.Place_Name }}</h2>
+            {% if place.Score is defined %}
+
+                {% if place.Score >= 3 %}
+                <span class="badge">⭐ Highly Recommended</span>
+                {% elif place.Score >= 2 %}
+                <span class="badge">👍 Recommended</span>
+                {% else %}
+                <span class="badge">📍 Popular Choice</span>
+                {% endif %}
+               
+           {% else %}
+
+                <span class="badge">📍 Popular Destination</span>
+
+          {% endif %}
+
+                <p><b>State:</b> {{ place.State_UT }}</p>
+
+                <p><b>Category:</b> {{ place.Category }}</p>
+
+                <p><b>Best Season:</b> {{ place.Best_Season }}</p>
+
+                <p><b>Rating:</b> ⭐ {{ place.Rating }}</p>
+
+                <p>{{ place.Description }}</p>
+
+            </div>
+
+        </div>
+
+    </a>
+
+    {% endfor %}
+
+{% else %}
+
+    <h2>No destinations found.</h2>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>

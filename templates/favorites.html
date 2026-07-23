@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>My Favorites</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<h1 style="text-align:center;">
+    ❤️ My Favorite Places
+</h1>
+
+<div class="cards-container">
+
+{% if favorites %}
+
+    {% for place in favorites %}
+
+    <div class="place-card">
+
+        <a href="{{ url_for('place_details',
+                place_name=place.Place_Name) }}"
+           class="place-link">
+
+        <img
+        src="{{ url_for('static',
+        filename=place.Image_URL.replace('\\','/')) }}"
+        class="place-image">
+
+        <div class="card-content">
+
+            <h2>{{ place.Place_Name }}</h2>
+
+            <p><b>State:</b> {{ place.State_UT }}</p>
+
+            <p><b>Rating:</b> ⭐ {{ place.Rating }}</p>
+
+        </div>
+
+        </a>
+
+        <a href="{{ url_for('remove_favorite', place_name=place.Place_Name) }}"
+           class="remove-fav-btn">
+        <title="Remove from Favorites">
+            ❤️
+        </a>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<h2 style="text-align:center;">
+No favorite places yet ❤️
+</h2>
+
+{% endif %}
+
+</div>
+
+</body>
+</html>

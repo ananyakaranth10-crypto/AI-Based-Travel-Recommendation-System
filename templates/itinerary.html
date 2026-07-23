@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Itinerary</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Journey Through India</div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/trip-planner">Trip Planner</a></li>
+        <li><a href="/my-trips">My Trips</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+
+<section class="itinerary-section">
+
+    <h1>🗓 Your {{ num_days }}-Day Itinerary</h1>
+    <p>Here's your personalized travel plan!</p>
+
+    {% for day in itinerary %}
+
+    <div class="itinerary-day">
+
+        <div class="day-header">
+            Day {{ day.day }}
+        </div>
+
+        <div class="day-places">
+
+            {% for place in day.places %}
+
+            <div class="itinerary-place-card">
+
+                <img src="{{ url_for('static', filename=place.Image_URL.replace('\\', '/')) }}"
+                     alt="{{ place.Place_Name }}"
+                     class="itinerary-place-img">
+
+                <div class="itinerary-place-info">
+
+                    <h3>{{ place.Place_Name }}</h3>
+
+                    <p>📍 {{ place.State_UT }}</p>
+                    <p>🏷 {{ place.Category }}</p>
+                    <p>⭐ {{ place.Rating }}</p>
+                    <p>{{ place.Description[:120] }}...</p>
+
+                    <a href="/place/{{ place.Place_Name }}"
+                       target="_blank"
+                       class="view-place-btn">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+    <div class="save-itinerary-box">
+
+        <h3>💾 Save This Trip</h3>
+
+        <form action="/save-itinerary" method="POST">
+
+            {% for place in selected_places %}
+            <input type="hidden" name="places" value="{{ place }}">
+            {% endfor %}
+
+            <input type="text"
+                   name="trip_name"
+                   placeholder="Give your trip a name (e.g. Karnataka Adventure)"
+                   required>
+
+            <button type="submit" class="save-btn">
+                Save Trip
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+<footer>
+    <h3>Journey Through India</h3>
+    <p>Explore • Discover • Travel</p>
+</footer>
+
+</body>
+</html>

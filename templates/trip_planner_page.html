@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Planner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">Journey Through India</div>
+    <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/journey-planner">Journey Planner</a></li>
+        <li><a href="/my-trips">My Trips</a></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+</nav>
+
+<section class="trip-planner-section">
+
+    <h1>🗺 Plan Your Trip</h1>
+    <p>Select a state and choose places you want to visit. We'll create a day-by-day itinerary for you!</p>
+
+    <div class="trip-planner-box">
+
+        <label>Select State</label>
+        <select id="stateSelect" onchange="loadPlaces()">
+            <option value="">-- Choose a State --</option>
+            {% for state in states %}
+            <option value="{{ state }}">{{ state }}</option>
+            {% endfor %}
+        </select>
+
+        <div id="places-container" style="display:none;">
+
+            <label>Select Places <span style="color:#3E5C4B; font-size:13px;">(pick at least 2)</span></label>
+
+            <div id="places-list" class="places-checkbox-grid"></div>
+
+            <form action="/generate-itinerary" method="POST" id="itinerary-form">
+                <div id="hidden-inputs"></div>
+                <button type="submit" class="generate-btn">
+                    🗓 Generate Itinerary
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    <h3>Journey Through India</h3>
+    <p>Explore • Discover • Travel</p>
+</footer>
+
+<script>
+function loadPlaces() {
+
+    const state = document.getElementById("stateSelect").value;
+
+    if (!state) {
+        document.getElementById("places-container").style.display = "none";
+        return;
+    }
+
+    fetch(`/get-places-by-state?state=${encodeURIComponent(state)}`)
+        .then(res => res.json())
+        .then(data => {
+
+            const container = document.getElementById("places-list");
+            const hiddenInputs = document.getElementById("hidden-inputs");
+            container.innerHTML = "";
+            hiddenInputs.innerHTML = "";
+
+            data.places.forEach(place => {
+
+                const label = document.createElement("label");
+                label.classList.add("place-checkbox-item");
+
+                label.innerHTML = `
+                    <input type="checkbox" value="${place}" onchange="updateHidden()">
+                    📍 ${place}
+                `;
+
+                container.appendChild(label);
+            });
+
+            document.getElementById("places-container").style.display = "block";
+        });
+}
+
+function updateHidden() {
+
+    const hiddenInputs = document.getElementById("hidden-inputs");
+    hiddenInputs.innerHTML = "";
+
+    const checked = document.querySelectorAll("#places-list input:checked");
+
+    checked.forEach(cb => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "places";
+        input.value = cb.value;
+        hiddenInputs.appendChild(input);
+    });
+}
+</script>
+
+</body>
+</html>
